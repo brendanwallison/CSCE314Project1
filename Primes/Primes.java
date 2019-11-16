@@ -11,7 +11,7 @@ public class Primes {
 	
 	private ArrayList<BigInteger> fullPrimeList = new ArrayList<BigInteger>();
 	private ArrayList<Pair<Integer>> mapTwins = new ArrayList<Pair<Integer>>();
-	private ArrayList< Pair<Integer> > mapHexPairs = new ArrayList< Pair<Integer> >();
+	private ArrayList< Pair<Pair<Integer>> > mapHexPairs = new ArrayList< Pair<Pair<Integer>> >();
 	// Pair class implementation.
 	private class Pair<T> {
 		private ArrayList<T> primePair = new ArrayList<T>(2);
@@ -28,6 +28,7 @@ public class Primes {
 			this.primePair.add(a);
 			this.primePair.add(b);
 		}
+
 	}
 	
 	// Member variables for containing out lists of integers, twin primes, hexagon crosses, and the pairs of twin primes that make up the hex crosses.
@@ -44,6 +45,18 @@ public class Primes {
 	
 	public boolean isPrime(BigInteger x)
 	{
+		//efficient prime test from existing list
+		if(fullPrimeList.contains(x)) {
+			return true;
+		}
+		//ultra-inefficient not-a-prime test, checking every factorization
+		else {
+			for (int i=2; i < x.intValue(); i++) {
+				if (x.intValue() % i == 0) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 	
@@ -66,11 +79,26 @@ public class Primes {
 			BigInteger B = fullPrimeList.get(b);
 			System.out.println(A.toString() + ", " + B.toString());
 		}
+		System.out.println("Total Twins: " + mapTwins.size());
 	}
 		
 	// Output the hexagon cross list. Each should be on a separate line listing the two twin primes and the corresponding hexagon cross, with the total number on the following line.
 	public void printHexes()
 	{
+		for (int i = 0; i < mapHexPairs.size(); i++) {
+			int a = mapHexPairs.get(i).getPrimePair().get(0).getPrimePair().get(0);
+			int b = mapHexPairs.get(i).getPrimePair().get(0).getPrimePair().get(1);
+			int c = mapHexPairs.get(i).getPrimePair().get(1).getPrimePair().get(0);
+			int d = mapHexPairs.get(i).getPrimePair().get(1).getPrimePair().get(1);
+			BigInteger A = fullPrimeList.get(a);
+			BigInteger A2 = A.add(BigInteger.ONE);
+			BigInteger B = fullPrimeList.get(b);
+			BigInteger C = fullPrimeList.get(c);
+			BigInteger C2 = C.add(BigInteger.ONE);
+			BigInteger D = fullPrimeList.get(d);
+			System.out.println("Prime Pairs: " + A.toString() + ", " + B.toString() + " and " + C.toString() + ", " + D.toString() + " separated by " + A2.toString() + ", " + C2.toString());
+		}
+		System.out.println("Total Hexes: " + mapHexPairs.size());
 	}
 		
 	// Generate and store a list of primes.
@@ -148,5 +176,33 @@ public class Primes {
 	// Generate and store the hexagon crosses, along with the two twin primes that generate the hexagon cross.
 	public void generateHexPrimes()
 	{
+		for (int i = 0; i < mapTwins.size(); i++) {
+			int a = mapTwins.get(i).getPrimePair().get(0);
+			//int b = mapTwins.get(i).getPrimePair().get(1);
+			BigInteger A = fullPrimeList.get(a);
+			
+			//calculate ostensible starting value of next twin prime
+			//only need to know first value in any given prime pair to fully characterize the pair
+			A=A.add(BigInteger.ONE);
+			A=A.multiply(BigInteger.valueOf(2));
+			A=A.subtract(BigInteger.ONE);
+			
+			for(int j = i+1; j < mapTwins.size(); j++) {
+				int s = mapTwins.get(j).getPrimePair().get(0);	//index of first item in prime pair
+				BigInteger S = fullPrimeList.get(s);	//value of first item
+				if (S.equals(A)) {
+					Pair<Integer> upperPair = new Pair<Integer>();
+					int t = mapTwins.get(j).getPrimePair().get(1);
+					upperPair.setPrimePair(s,t);
+					Pair<Pair<Integer>> HexCross = new Pair<Pair<Integer>>();
+					HexCross.setPrimePair(mapTwins.get(i), upperPair);
+					mapHexPairs.add(HexCross);
+					break;
+				}
+			}
+			
+		
+		}
+		
 	}
 }
