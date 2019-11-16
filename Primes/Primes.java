@@ -10,7 +10,7 @@ import java.math.BigInteger;
 public class Primes {
 	
 	private ArrayList<BigInteger> fullPrimeList = new ArrayList<BigInteger>();
-	private ArrayList<Integer> mapTwins = new ArrayList<Integer>();
+	private ArrayList<Pair<Integer>> mapTwins = new ArrayList<Pair<Integer>>();
 	private ArrayList< Pair<Integer> > mapHexPairs = new ArrayList< Pair<Integer> >();
 	// Pair class implementation.
 	private class Pair<T> {
@@ -20,10 +20,13 @@ public class Primes {
 		{
 			return primePair;
 		}
-
-		private void setPrimePair(ArrayList<T> primePair)
+		
+		
+		private void setPrimePair(T a, T b)
 		{
-			this.primePair = primePair;
+			this.primePair.clear();
+			this.primePair.add(a);
+			this.primePair.add(b);
 		}
 	}
 	
@@ -47,12 +50,22 @@ public class Primes {
 	// Output the prime list. Each prime should be on a separate line and the total number of primes should be on the following line.
 	public void printPrimes()
 	{
-		//for(int)
+		for(int i = 0; i < fullPrimeList.size(); i++) {
+			System.out.println(fullPrimeList.get(i).toString());
+		}
+		System.out.println("Total Primes: " + fullPrimeList.size());
 	}
 		
 	// Output the twin prime list. Each twin prime should be on a separate line with a comma separating them, and the total number of twin primes should be on the following line.
 	public void printTwins()
 	{
+		for (int i = 0; i < mapTwins.size(); i++) {
+			int a = mapTwins.get(i).getPrimePair().get(0);
+			int b = mapTwins.get(i).getPrimePair().get(1);
+			BigInteger A = fullPrimeList.get(a);
+			BigInteger B = fullPrimeList.get(b);
+			System.out.println(A.toString() + ", " + B.toString());
+		}
 	}
 		
 	// Output the hexagon cross list. Each should be on a separate line listing the two twin primes and the corresponding hexagon cross, with the total number on the following line.
@@ -74,10 +87,10 @@ public class Primes {
 		//the maximum value of integer mapped by the formula (2*(maxInt) + 1)
 		ArrayList<Boolean> primeTruth = new ArrayList<Boolean>(Collections.nCopies(sundaramLimit, true));
 		
-		//set index 0 to false; this will correspond to the prime number 1
+		//set index 0 to false; this will correspond to the non-prime number 1 (thus false)
 		primeTruth.set(0, false);	
 		
-		//also manually count two as a prime; this is the only even prime
+		//manually count two as a prime; this is the only even prime
 		//algorithm (sundaram sieve) will pick up all odd primes
 		if (limit>1) {
 			fullPrimeList.add(BigInteger.valueOf(2));
@@ -91,11 +104,18 @@ public class Primes {
 			
 		}
 		
-		
-		for (int i = 1; i < sundaramLimit; i++ )
+		//fullPrimeList is always larger than count; but we only need count primes
+		//check against primeTruth.size() should be unnecessary, but 
+		//starts at one because the first prime--2--has already been manually added
+		int i = 1;
+		int primes=1;
+		while(primes < count && i < primeTruth.size()) {
 			if(primeTruth.get(i)) {
 				fullPrimeList.add(BigInteger.valueOf(i*2+1));
+				primes = primes+1;
 			}
+			i=i+1;
+		}
 	}
 	
 	//Generate an upper bound of a range guaranteed to contain at least n primes
@@ -110,8 +130,19 @@ public class Primes {
 	}
 	
 	// Generate and store a list of twin primes.
+	// Specifically, the list is a mapping of index pairs in fullPrimeList
 	public void generateTwinPrimes()
 	{
+		int difference;
+		for(int i = 0; i < fullPrimeList.size()-1; i++) {
+			difference = (fullPrimeList.get(i+1).subtract(fullPrimeList.get(i))).intValue();
+			if(difference == 2) {
+				Pair<Integer> newPair = new Pair<Integer>();
+				newPair.setPrimePair(i,i+1);
+				mapTwins.add(newPair);
+			}
+		}
+		
 	}
 	
 	// Generate and store the hexagon crosses, along with the two twin primes that generate the hexagon cross.
