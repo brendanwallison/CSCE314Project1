@@ -199,10 +199,7 @@ public class Primes {
 					mapHexPairs.add(HexCross);
 					break;
 				}
-			}
-			
-		
-		}
-		
+			}		
+		}	
 	}
 }
