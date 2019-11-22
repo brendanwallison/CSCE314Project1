@@ -1,3 +1,4 @@
+package Phase2;
 // This file gives access to the underlying datafile and stores the data in the Workout class.
 import java.io.File;
 import java.io.FileNotFoundException;
