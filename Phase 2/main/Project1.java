@@ -23,17 +23,26 @@ public class Project1
 		
 		for (BigInteger x : p.iteratePrimes())
 		{
-			System.out.println(x);
+			System.out.println("Potential Prime " + x + " Primality: " + ThoughtfulTest.isPrime(x));
 		}
 		
-		Iterator<BigInteger> iter = p.iteratePrimes().iterator();
-		while(iter.hasNext()) {
-			System.out.println(iter.next());
-		}
+		BigInteger big = new BigInteger("15485863");
+		BigInteger big2 = new BigInteger("982451653");
 		
-		for (Pair<BigInteger> x : p.iterateCrosses()) {
-			System.out.println(x.left());
-		}
+		System.out.println("Potential Prime " + big + " Primality: " + ThoughtfulTest.isPrime(big));
+		System.out.println("Potential Prime " + big2 + " Primality: " + ThoughtfulTest.isPrime(big2));
+//		
+//		Iterator<BigInteger> iter = p.iteratePrimes().iterator();
+//		while(iter.hasNext()) {
+//			System.out.println(iter.next());
+//		}
+//		
+//		for (Pair<BigInteger> x : p.iterateCrosses()) {
+//			System.out.println(x.left());
+//		}
+		
+		
+		//System.out.println(NaiveTest.isPrime(BigInteger.TEN));
 		
 		//MainWindow mw = new MainWindow(Config.APPLICATIONNAME, p);
 	}
