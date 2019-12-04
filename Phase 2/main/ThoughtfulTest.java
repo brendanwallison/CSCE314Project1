@@ -2,6 +2,11 @@ package main;
 
 import java.math.BigInteger;
 
+//This class employees deterministic variants of the Miller Rabin test as its primary strategy
+//Performance is great for n < 3,317,044,064,679,887,385,961,981 
+//After that, performance will fall off a cliff
+//Further deterministic variants, if they exist, might expand this
+
 public class ThoughtfulTest
 {
 	public static boolean isPrime(BigInteger candidate)
@@ -148,7 +153,50 @@ public class ThoughtfulTest
 					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(17));
 			return new Pair<Boolean>(isDeterministic, isPrime);
 		}
-	
+		if(candidate.compareTo(new BigInteger("3825123056546413051")) == -1) {
+			isPrime = millerRabinTest(candidate, s, d, BigInteger.valueOf(2)) 
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(3))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(5))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(7))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(11))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(13))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(17))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(19))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(23));
+			return new Pair<Boolean>(isDeterministic, isPrime);
+		}
+		if(candidate.compareTo(new BigInteger("318665857834031151167461")) == -1) {
+			isPrime = millerRabinTest(candidate, s, d, BigInteger.valueOf(2)) 
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(3))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(5))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(7))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(11))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(13))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(17))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(19))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(23))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(29))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(31))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(37));
+			return new Pair<Boolean>(isDeterministic, isPrime);
+		}
+		if(candidate.compareTo(new BigInteger("3317044064679887385961981")) == -1) {
+			isPrime = millerRabinTest(candidate, s, d, BigInteger.valueOf(2)) 
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(3))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(5))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(7))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(11))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(13))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(17))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(19))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(23))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(29))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(31))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(37))
+					&& millerRabinTest(candidate, s, d, BigInteger.valueOf(41));
+			return new Pair<Boolean>(isDeterministic, isPrime);
+		}
+		
 		isDeterministic = false;
 		isPrime = millerRabinTest(candidate, s, d, BigInteger.valueOf(2)) 
 				&& millerRabinTest(candidate, s, d, BigInteger.valueOf(3))

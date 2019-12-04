@@ -21,16 +21,86 @@ public class MainWindow extends JFrame
 {
 	private static final long serialVersionUID = -3880026026104218593L;
 	private Primes m_Primes;
-	private JTextField tfPrimeFileName;
-	private JTextField tfCrossFileName;
-	private JLabel lblPrimeCount;
-	private JLabel lblCrossCount;
+	private JTextField tfPrimeFileName = new JTextField();
+	private JTextField tfCrossFileName = new JTextField();
+	private JLabel lblPrimeCount = new JLabel();
+	private JLabel lblCrossCount = new JLabel();
 	private JLabel lblLargestPrime;
 	private JLabel lblLargestCross;
 	private JLabel lblStatus;
 
 	MainWindow(String name, Primes p)
 	{
+		setSize(1000,400);
+		setTitle(name);
+
+		lblPrimeCount.setText(String.valueOf(9000));
+		lblCrossCount.setText(String.valueOf(20));
+		//JDialog mWindow = new JDialog(this, name);
+		GridBagLayout gridLayout = new GridBagLayout();
+		getContentPane().setBackground(new Color(80, 0, 0));
+		getContentPane().setLayout(gridLayout);
+
+		GridBagConstraints gbcFilename = new GridBagConstraints();
+		//gbcFilename.fill = GridBagConstraints.HORIZONTAL;
+		gbcFilename.anchor = GridBagConstraints.WEST;
+		gbcFilename.ipady = 10;
+		//gbcFilename.gridwidth = 5;
+		gbcFilename.weightx = .5;
+		gbcFilename.insets = new Insets(1, 2, 0, 0);
+		gbcFilename.gridx = 0;
+		gbcFilename.gridy = 0;
+
+		GridBagConstraints gbcMetadata = new GridBagConstraints();
+		//gbcMetadata.fill = GridBagConstraints.HORIZONTAL;
+		gbcMetadata.anchor = GridBagConstraints.EAST;
+		gbcMetadata.ipady = 10;
+		gbcMetadata.weightx = .5;
+		gbcMetadata.insets = new Insets(1, 2, 0, 0);
+		gbcMetadata.gridx = 1;
+		gbcMetadata.gridy = 0;
+
+		JPanel pnlGenerate = new JPanel();
+		pnlGenerate.setLayout(new GridBagLayout());
+			
+		lblPrimeCount.setLabelFor(tfPrimeFileName);
+		tfPrimeFileName.setColumns(30);
+		//pnlGenerate.add(tfPrimeFileName, gbcPanel);
+		//gbcPanel.gridx = 1;
+		pnlGenerate.add(tfPrimeFileName,gbcFilename);
+		pnlGenerate.add(lblPrimeCount,gbcMetadata);
+		
+		add(pnlGenerate);
+		
+		setVisible(true);
+
+//		JLabel lblCount = new JLabel("Number of Primes to Generate");
+//		lblCount.setFont(new Font("Tahoma", Font.PLAIN, 12));
+//		pnlGenerate.add(lblCount, gbcPanel);
+
+		//JTextField tfCount = new JTextField();
+//		lblCount.setLabelFor(tfPrimeFileName);
+//		tfPrimeFileName.setColumns(30);
+//		gbcPanel.gridx = 1;
+//		pnlGenerate.add(tfPrimeFileName, gbcPanel);
+		
+//		JLabel lblStart = new JLabel("Starting Number (does not have to be prime)");
+//		lblStart.setFont(new Font("Tahoma", Font.PLAIN, 12));
+//		gbcPanel.gridx = 0;
+//		gbcPanel.gridy = 1;
+//		pnlGenerate.add(lblStart, gbcPanel);
+//
+//		JTextField tfStart = new JTextField();
+//		lblStart.setLabelFor(tfStart);
+//		tfStart.setColumns(30);
+//		gbcPanel.gridx = 1;
+//		pnlGenerate.add(tfStart, gbcPanel);
+//
+//		dPrimes.add(pnlGenerate, gbcDialog);
+//		
+		popupGeneratePrimes();
+		//JPanel panel = new JPanel();
+		//getContentPane().add(panel);
 	}
 
 	protected void popupGeneratePrimes()
