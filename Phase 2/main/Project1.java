@@ -47,19 +47,19 @@ public class Project1
 		
 		//System.out.println(NaiveTest.isPrime(BigInteger.TEN));
 		
-		//MainWindow mw = new MainWindow(Config.APPLICATIONNAME, p);
+		new MainWindow(Config.APPLICATIONNAME, p);
 		
-		FileAccess reader = new FileAccess();
-		
-		reader.loadPrimes(p, Config.PRIMEFIILENAME);
-		
-		reader.loadCrosses(p, Config.CROSSFILENAME);
-		
-		p.printPrimes();
-		p.printHexes();
-		
-		FileAccess writer = new FileAccess();
-		writer.savePrimes(p, "primeOutput.txt");
-		writer.saveCrosses(p, "crossOutput.txt");
+//		FileAccess reader = new FileAccess();
+//		
+//		reader.loadPrimes(p, Config.PRIMEFIILENAME);
+//		
+//		reader.loadCrosses(p, Config.CROSSFILENAME);
+//		
+//		p.printPrimes();
+//		p.printHexes();
+//		
+//		FileAccess writer = new FileAccess();
+//		writer.savePrimes(p, "primeOutput.txt");
+//		writer.saveCrosses(p, "crossOutput.txt");
 	}
 }
