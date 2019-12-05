@@ -37,7 +37,7 @@ public class MainWindow extends JFrame
 	MainWindow(String name, Primes p)
 	{
 		setSize(1000,400);
-		lblStatus.setText("Bored");
+		lblStatus.setText("Status: Bored");
 		setTitle(name);
 		m_Primes = p;
 		//primeCount = m_Primes.primeCount();
@@ -102,10 +102,15 @@ public class MainWindow extends JFrame
 				try
 				{
 					String filename = tfPrimeFileName.getText();
-					FileAccess.loadPrimes(m_Primes, filename);
+					if(!FileAccess.loadPrimes(m_Primes, filename)) {
+						lblStatus.setText("Status: Could Not Read File");
+					}
+					else {
+						lblStatus.setText("Status: Prime List Loaded Successfully");
+					}
 				} catch (Exception ex)
 				{
-					lblStatus.setText("Could Not Read File");
+					lblStatus.setText("Status: Could Not Read File");
 				}
 				updateStats();
 			}
@@ -119,11 +124,15 @@ public class MainWindow extends JFrame
 				try
 				{
 					String filename = tfPrimeFileName.getText();
-					FileAccess.savePrimes(m_Primes, filename);
+					if(!FileAccess.savePrimes(m_Primes, filename)){	
+						lblStatus.setText("Status: Could Not Write File");
+					}
+					else {
+						lblStatus.setText("Status: Prime List Saved Successfully");
+					}
 				} catch (Exception ex)
 				{
-					lblStatus
-							.setText("Type a valid file path");
+					lblStatus.setText("Status: Could Not Write File");
 				}
 
 			}
@@ -167,11 +176,15 @@ public class MainWindow extends JFrame
 				try
 				{
 					String filename = tfCrossFileName.getText();
-					FileAccess.loadCrosses(m_Primes, filename);
+					if(!FileAccess.loadCrosses(m_Primes, filename)) {
+						lblStatus.setText("Status: Could Not Read File");
+					}
+					else {
+						lblStatus.setText("Status: Cross List Loaded Successfully");
+					}
 				} catch (Exception ex)
 				{
-					lblStatus
-							.setText("Type a valid file path");
+					lblStatus.setText("Status: Could Not Read File");
 				}
 				updateStats();
 			}
@@ -185,11 +198,15 @@ public class MainWindow extends JFrame
 				try
 				{
 					String filename = tfCrossFileName.getText();
-					FileAccess.saveCrosses(m_Primes, filename);
+					if(!FileAccess.saveCrosses(m_Primes, filename)) {
+						lblStatus.setText("Status: Could Not Write File");
+					}
+					else {
+						lblStatus.setText("Status: Cross List Saved Successfully");
+					}
 				} catch (Exception ex)
 				{
-					lblStatus
-							.setText("Type a valid file path");
+					lblStatus.setText("Status: Could Not Write File");
 				}
 
 			}
@@ -256,8 +273,10 @@ public class MainWindow extends JFrame
 		gbcPanel.gridx = 2;
 		add(btnGenerateCrosses,gbcPanel);
 
+		gbcPanel.anchor = GridBagConstraints.WEST;
 		gbcPanel.gridx = 0;
 		gbcPanel.gridy = 5;
+		gbcPanel.gridwidth = 5;
 		add(lblStatus, gbcPanel);
 
 		
@@ -418,16 +437,20 @@ public class MainWindow extends JFrame
 	// etc)
 	private void updateStats()
 	{
-		primeCount = m_Primes.primeCount();
-		crossCount = m_Primes.crossesCount();
-		largestPrime = m_Primes.sizeofLastPrime();
-		largestCrossLeft = m_Primes.sizeofLastCross().left();
-		largestCrossRight = m_Primes.sizeofLastCross().right();
-		lblPrimeCount.setText(String.valueOf(primeCount));
-		lblCrossCount.setText(String.valueOf(crossCount));
-		lblLargestPrime.setText("<html><center>The largest prime has " + largestPrime + " digits<br> The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
-		lblLargestCross.setText("The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
-		super.update(this.getGraphics());
+		try {
+			primeCount = m_Primes.primeCount();
+			crossCount = m_Primes.crossesCount();
+			largestPrime = m_Primes.sizeofLastPrime();
+			largestCrossLeft = m_Primes.sizeofLastCross().left();
+			largestCrossRight = m_Primes.sizeofLastCross().right();
+			lblPrimeCount.setText(String.valueOf(primeCount));
+			lblCrossCount.setText(String.valueOf(crossCount));
+			lblLargestPrime.setText("<html><center>The largest prime has " + largestPrime + " digits<br> The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
+			lblLargestCross.setText("The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
+			super.update(this.getGraphics());
+		}
+		catch(Exception e) {}
+			
 	}
 
 }
