@@ -96,7 +96,7 @@ public class Primes
 			boolean found = false;
 			while (!found)
 			{
-				if (NaiveTest.isPrime(candidate)) // You should implement a faster primality test!
+				if (ThoughtfulTest.isPrime(candidate)) // You should implement a faster primality test!
 				{
 					primeList.add(candidate);
 					found = true;
