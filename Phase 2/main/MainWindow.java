@@ -30,16 +30,19 @@ public class MainWindow extends JFrame
 	private JTextField tfCrossFileName = new JTextField();
 	private JLabel lblPrimeCount = new JLabel();
 	private JLabel lblCrossCount = new JLabel();
-	private JLabel lblLargestPrime;
-	private JLabel lblLargestCross;
-	private JLabel lblStatus;
+	private JLabel lblLargestPrime = new JLabel();
+	private JLabel lblLargestCross = new JLabel();
+	private JLabel lblStatus = new JLabel();
 
 	MainWindow(String name, Primes p)
 	{
 		setSize(1000,400);
+		lblStatus.setText("Bored");
 		setTitle(name);
 		m_Primes = p;
-		//updateStats();
+		//primeCount = m_Primes.primeCount();
+		//crossCount = m_Primes.crossesCount();
+		updateStats();
 		
 		GridBagConstraints gbcRow = new GridBagConstraints();
 		gbcRow.fill = GridBagConstraints.HORIZONTAL;
@@ -102,8 +105,7 @@ public class MainWindow extends JFrame
 					FileAccess.loadPrimes(m_Primes, filename);
 				} catch (Exception ex)
 				{
-					lblStatus
-							.setText("Type a valid file path");
+					lblStatus.setText("Could Not Read File");
 				}
 				updateStats();
 			}
@@ -195,13 +197,13 @@ public class MainWindow extends JFrame
 		
 		
 		JLabel lblCrossArea = new JLabel();
-		lblCrossArea.setText("Primes File");
+		lblCrossArea.setText("Cross File");
 		lblCrossArea.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		
 		gbcBigText.gridx = 0;
 		gbcBigText.gridy = 3;
 
-		add(lblPrimeArea,gbcBigText);
+		add(lblCrossArea,gbcBigText);
 		
 		gbcPanel.gridx = 1;
 		gbcPanel.gridy = 3;
@@ -209,6 +211,55 @@ public class MainWindow extends JFrame
 		
 		gbcPanel.gridx = 2;
 		add(btnSaveCrosses,gbcPanel);	
+		
+		
+		JButton btnGeneratePrimes = new JButton("Generate Primes");
+		btnGeneratePrimes.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				popupGeneratePrimes();
+				updateStats();
+			}
+		});
+		
+		JButton btnGenerateCrosses = new JButton("Generate Crosses");
+		btnGenerateCrosses.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				m_Primes.generateHexPrimes();
+				updateStats();
+			}
+		});	
+		
+		gbcPanel.gridx = 0;
+		gbcPanel.gridy = 4;
+		add(btnGeneratePrimes,gbcPanel);
+		
+		
+//		GridBagConstraints gbcPanel2 = new GridBagConstraints();
+//		JPanel pnlStatus = new JPanel();
+//		pnlStatus.setLayout(new GridBagLayout());
+//		gbcPanel.anchor = GridBagConstraints.SOUTHWEST;
+//		gbcPanel.weightx = .5;
+//		gbcPanel.insets = new Insets(1, 2, 0, 0);
+//		gbcPanel.gridx = 0;
+//		gbcPanel.gridy = 0;
+//		pnlStatus.add(lblLargestPrime, gbcPanel2);
+//		gbcPanel2.gridy = 1;
+//		pnlStatus.add(lblLargestCross, gbcPanel2);
+		
+		gbcPanel.gridx = 1;
+		add(lblLargestPrime,gbcPanel);
+		
+		gbcPanel.gridx = 2;
+		add(btnGenerateCrosses,gbcPanel);
+
+		gbcPanel.gridx = 0;
+		gbcPanel.gridy = 5;
+		add(lblStatus, gbcPanel);
+
 		
 		pack();
 		
@@ -313,8 +364,7 @@ public class MainWindow extends JFrame
 					dPrimes.dispose();
 				} catch (NumberFormatException ex)
 				{
-					lblStatus
-							.setText("You failed to type in an integer successfully. You are terrible at math. Shame.");
+					lblStatus.setText("You failed to type in an integer successfully. You are terrible at math. Shame.");
 					dPrimes.dispose();
 				}
 
@@ -373,6 +423,11 @@ public class MainWindow extends JFrame
 		largestPrime = m_Primes.sizeofLastPrime();
 		largestCrossLeft = m_Primes.sizeofLastCross().left();
 		largestCrossRight = m_Primes.sizeofLastCross().right();
+		lblPrimeCount.setText(String.valueOf(primeCount));
+		lblCrossCount.setText(String.valueOf(crossCount));
+		lblLargestPrime.setText("<html><center>The largest prime has " + largestPrime + " digits<br> The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
+		lblLargestCross.setText("The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
+		super.update(this.getGraphics());
 	}
 
 }
