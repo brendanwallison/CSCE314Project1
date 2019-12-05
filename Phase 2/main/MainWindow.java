@@ -23,6 +23,9 @@ public class MainWindow extends JFrame
 	private Primes m_Primes;
 	private int primeCount;
 	private int crossCount;
+	private int largestPrime;
+	private int largestCrossLeft;
+	private int largestCrossRight;
 	private JTextField tfPrimeFileName = new JTextField();
 	private JTextField tfCrossFileName = new JTextField();
 	private JLabel lblPrimeCount = new JLabel();
@@ -36,25 +39,29 @@ public class MainWindow extends JFrame
 		setSize(1000,400);
 		setTitle(name);
 		m_Primes = p;
-		primeCount = m_Primes.primeCount();
-		crossCount = m_Primes.crossesCount();
+		//updateStats();
 		
-		GridBagConstraints gbcMain = new GridBagConstraints();
+		GridBagConstraints gbcRow = new GridBagConstraints();
+		gbcRow.fill = GridBagConstraints.HORIZONTAL;
+		gbcRow.gridy=0;
 		//gbcFilename.fill = GridBagConstraints.HORIZONTAL;
-		gbcMain.gridy = 0;
 
 		lblPrimeCount.setText(String.valueOf(primeCount));
 		lblCrossCount.setText(String.valueOf(crossCount));
+		//lblLargestPrime.setText(String.valueOf(largestPrime));
+		//lblLargestCross.setText(String.valueOf(largestCrossLeft + ", " + String.valueOf(largestCrossRight)));
 		//JDialog mWindow = new JDialog(this, name);
 		GridBagLayout gridLayout = new GridBagLayout();
-		getContentPane().setBackground(new Color(80, 0, 0));
+		//getContentPane().setBackground(new Color(80, 0, 0));
 		getContentPane().setLayout(gridLayout);
 
+		
+		
 		GridBagConstraints gbcFilename = new GridBagConstraints();
-		//gbcFilename.fill = GridBagConstraints.HORIZONTAL;
-		gbcFilename.anchor = GridBagConstraints.WEST;
+		gbcFilename.fill = GridBagConstraints.HORIZONTAL;
+		//gbcFilename.anchor = GridBagConstraints.WEST;
 		gbcFilename.ipady = 10;
-		//gbcFilename.gridwidth = 5;
+		gbcFilename.gridwidth = 2;
 		gbcFilename.weightx = .5;
 		gbcFilename.insets = new Insets(1, 2, 0, 0);
 		gbcFilename.gridx = 0;
@@ -68,20 +75,18 @@ public class MainWindow extends JFrame
 		gbcMetadata.insets = new Insets(1, 2, 0, 0);
 		gbcMetadata.gridx = 1;
 		gbcMetadata.gridy = 0;
+		gbcMetadata.gridwidth = 9;
+		
 
-		//PRIME AREA OF MAIN WINDOW	
 		
-		JPanel pnlGenerate = new JPanel();
-		pnlGenerate.setLayout(new GridBagLayout());
-			
+		lblPrimeCount.setFont(new Font("Tahoma", Font.PLAIN, 12));
+
+		//PRIME AREA OF MAIN WINDOW		
+		tfPrimeFileName.setColumns(6);
 		lblPrimeCount.setLabelFor(tfPrimeFileName);
-		tfPrimeFileName.setColumns(30);
-		//pnlGenerate.add(tfPrimeFileName, gbcPanel);
-		//gbcPanel.gridx = 1;
-		pnlGenerate.add(tfPrimeFileName,gbcFilename);
-		pnlGenerate.add(lblPrimeCount,gbcMetadata);
-		
-		add(pnlGenerate,gbcMain);
+
+		add(tfPrimeFileName,gbcFilename);
+		add(lblPrimeCount,gbcMetadata);
 		
 		JPanel pnlButtons = new JPanel();
 		pnlButtons.setLayout(new GridBagLayout());
@@ -100,7 +105,7 @@ public class MainWindow extends JFrame
 					lblStatus
 							.setText("Type a valid file path");
 				}
-				primeCount = m_Primes.primeCount();
+				updateStats();
 			}
 		});
 		
@@ -122,62 +127,63 @@ public class MainWindow extends JFrame
 			}
 		});
 		
-		GridBagConstraints gbcPanel = new GridBagConstraints();
-		gbcPanel.gridx = 0;
-		gbcPanel.gridy = 0;
-		pnlButtons.add(btnLoadPrimes,gbcPanel);
+		JLabel lblPrimeArea = new JLabel();
+		lblPrimeArea.setText("Primes File");
+		lblPrimeArea.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		
-		gbcPanel.gridx = 1;
-		pnlButtons.add(btnSavePrimes,gbcPanel);
-		
-		gbcMain.gridy=1;
-		add(pnlButtons,gbcMain);
+		GridBagConstraints gbcBigText = new GridBagConstraints();
+		gbcBigText.gridx = 0;
+		gbcBigText.gridy = 1;
 
+		add(lblPrimeArea,gbcBigText);
+		
+		GridBagConstraints gbcPanel = new GridBagConstraints();
+		gbcPanel.gridx = 1;
+		gbcPanel.gridy = 1;
+		add(btnLoadPrimes,gbcPanel);
+		
+		gbcPanel.gridx = 2;
+		add(btnSavePrimes,gbcPanel);
+		
 		//CROSS AREA OF MAIN WINDOW		
 		
-		JPanel pnlGenerate2 = new JPanel();
-		pnlGenerate2.setLayout(new GridBagLayout());
-		
-		
-		lblPrimeCount.setLabelFor(tfPrimeFileName);
-		tfPrimeFileName.setColumns(30);
-		//pnlGenerate.add(tfPrimeFileName, gbcPanel);
-		//gbcPanel.gridx = 1;
-		pnlGenerate.add(tfPrimeFileName,gbcFilename);
-		pnlGenerate.add(lblPrimeCount,gbcMetadata);
-		
-		add(pnlGenerate,gbcMain);
-		
-		JPanel pnlButtons = new JPanel();
-		pnlButtons.setLayout(new GridBagLayout());
+		tfCrossFileName.setColumns(6);
+		lblCrossCount.setLabelFor(tfCrossFileName);
 
-		JButton btnLoadPrimes = new JButton("Load");
-		btnLoadPrimes.addActionListener(new ActionListener()
+		gbcFilename.gridy = 2;
+		gbcMetadata.gridy = 2;
+
+		add(tfCrossFileName,gbcFilename);
+		add(lblCrossCount,gbcMetadata);
+
+
+		JButton btnLoadCrosses = new JButton("Load");
+		btnLoadCrosses.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				try
 				{
-					String filename = tfPrimeFileName.getText();
-					FileAccess.loadPrimes(m_Primes, filename);
+					String filename = tfCrossFileName.getText();
+					FileAccess.loadCrosses(m_Primes, filename);
 				} catch (Exception ex)
 				{
 					lblStatus
 							.setText("Type a valid file path");
 				}
-				primeCount = m_Primes.primeCount();
+				updateStats();
 			}
 		});
 		
-		JButton btnSavePrimes = new JButton("Save");
-		btnSavePrimes.addActionListener(new ActionListener()
+		JButton btnSaveCrosses = new JButton("Save");
+		btnSaveCrosses.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
 				try
 				{
-					String filename = tfPrimeFileName.getText();
-					FileAccess.savePrimes(m_Primes, filename);
+					String filename = tfCrossFileName.getText();
+					FileAccess.saveCrosses(m_Primes, filename);
 				} catch (Exception ex)
 				{
 					lblStatus
@@ -185,24 +191,30 @@ public class MainWindow extends JFrame
 				}
 
 			}
-		});
+		});	
 		
-		GridBagConstraints gbcPanel = new GridBagConstraints();
-		gbcPanel.gridx = 0;
-		gbcPanel.gridy = 0;
-		pnlButtons.add(btnLoadPrimes,gbcPanel);
+		
+		JLabel lblCrossArea = new JLabel();
+		lblCrossArea.setText("Primes File");
+		lblCrossArea.setFont(new Font("Tahoma", Font.PLAIN, 19));
+		
+		gbcBigText.gridx = 0;
+		gbcBigText.gridy = 3;
+
+		add(lblPrimeArea,gbcBigText);
 		
 		gbcPanel.gridx = 1;
-		pnlButtons.add(btnSavePrimes,gbcPanel);
+		gbcPanel.gridy = 3;
+		add(btnLoadCrosses,gbcPanel);
 		
-		gbcMain.gridy=1;
-		add(pnlButtons,gbcMain);
+		gbcPanel.gridx = 2;
+		add(btnSaveCrosses,gbcPanel);	
 		
+		pack();
 		
-		crossCount = m_Primes.crossesCount();
 		setVisible(true);
 		
-		
+
 
 //		JLabel lblCount = new JLabel("Number of Primes to Generate");
 //		lblCount.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -350,11 +362,17 @@ public class MainWindow extends JFrame
 		dPrimes.setVisible(true);
 	}
 
+	
+	
 	// This function updates all the GUI statistics. (# of primes, # of crosses,
 	// etc)
 	private void updateStats()
 	{
-		
+		primeCount = m_Primes.primeCount();
+		crossCount = m_Primes.crossesCount();
+		largestPrime = m_Primes.sizeofLastPrime();
+		largestCrossLeft = m_Primes.sizeofLastCross().left();
+		largestCrossRight = m_Primes.sizeofLastCross().right();
 	}
 
 }

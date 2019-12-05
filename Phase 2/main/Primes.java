@@ -125,6 +125,7 @@ public class Primes
 	public void generateHexPrimes()
 	{
 		crossList.clear();
+		generateTwinPrimes();
 		for (int i = 0; i < twinPrimeList.size() - 1; i++)
 		{
 			BigInteger n = twinPrimeList.get(i).left().add(BigInteger.ONE);
