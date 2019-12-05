@@ -6,9 +6,12 @@ package main;
 
 public class Config
 {
-	public final static String DATAPATH = "data/"; // If you don't know what the static keyword does, you better go look
+	public final static String DATAPATH = "C://Users/brend/Desktop/data/"; // If you don't know what the static keyword does, you better go look
 											// it up now.
 	public final static String APPLICATIONNAME = "Prime Program";
+	public final static String PRIMEFIILENAME = "primes.txt";
+	public final static String CROSSFILENAME = "crosses.txt";
+	
 	// Prime file: One prime per line.
 	// Cross file: Two primes per line, separated by a comma.
 }

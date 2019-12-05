@@ -167,6 +167,14 @@ public class Primes
 		return crossList.size();
 	}
 
+	public BigInteger getPrime(int index) {
+		return primeList.get(index);
+	}
+	
+	public Pair<BigInteger> getCross(int index) {
+		return crossList.get(index);
+	}
+	
 	public class IterablePrimes implements Iterable<BigInteger>
 	{
 		
