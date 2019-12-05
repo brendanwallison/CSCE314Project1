@@ -22,7 +22,7 @@ public class ThoughtfulTest
 			//deterministic true and prime false
 			else return false;
 		}
-		//deterministic false, prime true
+		//probabilistic, prime false
 		else if (!millerRabinResult.right()) {
 			return false;
 		}
