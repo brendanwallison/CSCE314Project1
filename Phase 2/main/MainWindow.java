@@ -23,9 +23,9 @@ public class MainWindow extends JFrame
 	private Primes m_Primes;
 	private int primeCount;
 	private int crossCount;
-	private int largestPrime;
-	private int largestCrossLeft;
-	private int largestCrossRight;
+	private int largestPrime = 0;
+	private int largestCrossLeft = 0;
+	private int largestCrossRight = 0;
 	private JTextField tfPrimeFileName = new JTextField();
 	private JTextField tfCrossFileName = new JTextField();
 	private JLabel lblPrimeCount = new JLabel();
@@ -38,6 +38,7 @@ public class MainWindow extends JFrame
 	{
 		setSize(1000,400);
 		lblStatus.setText("Status: Bored");
+		lblLargestPrime.setText("<html><center>The largest prime has " + largestPrime + " digits<br> The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
 		setTitle(name);
 		m_Primes = p;
 		//primeCount = m_Primes.primeCount();
@@ -236,7 +237,6 @@ public class MainWindow extends JFrame
 			public void actionPerformed(ActionEvent e)
 			{
 				popupGeneratePrimes();
-				updateStats();
 			}
 		});
 		
@@ -275,44 +275,11 @@ public class MainWindow extends JFrame
 
 		gbcPanel.anchor = GridBagConstraints.WEST;
 		gbcPanel.gridx = 0;
-		gbcPanel.gridy = 5;
-		gbcPanel.gridwidth = 5;
-		add(lblStatus, gbcPanel);
-
-		
-		pack();
-		
+		gbcPanel.gridy = 6;
+		gbcPanel.gridwidth = 10;
+		add(lblStatus, gbcPanel);	
+		pack();	
 		setVisible(true);
-		
-
-
-//		JLabel lblCount = new JLabel("Number of Primes to Generate");
-//		lblCount.setFont(new Font("Tahoma", Font.PLAIN, 12));
-//		pnlGenerate.add(lblCount, gbcPanel);
-
-		//JTextField tfCount = new JTextField();
-//		lblCount.setLabelFor(tfPrimeFileName);
-//		tfPrimeFileName.setColumns(30);
-//		gbcPanel.gridx = 1;
-//		pnlGenerate.add(tfPrimeFileName, gbcPanel);
-		
-//		JLabel lblStart = new JLabel("Starting Number (does not have to be prime)");
-//		lblStart.setFont(new Font("Tahoma", Font.PLAIN, 12));
-//		gbcPanel.gridx = 0;
-//		gbcPanel.gridy = 1;
-//		pnlGenerate.add(lblStart, gbcPanel);
-//
-//		JTextField tfStart = new JTextField();
-//		lblStart.setLabelFor(tfStart);
-//		tfStart.setColumns(30);
-//		gbcPanel.gridx = 1;
-//		pnlGenerate.add(tfStart, gbcPanel);
-//
-//		dPrimes.add(pnlGenerate, gbcDialog);
-//		
-//		popupGeneratePrimes();
-		//JPanel panel = new JPanel();
-		//getContentPane().add(panel);
 	}
 
 	protected void popupGeneratePrimes()
@@ -441,10 +408,10 @@ public class MainWindow extends JFrame
 			primeCount = m_Primes.primeCount();
 			crossCount = m_Primes.crossesCount();
 			largestPrime = m_Primes.sizeofLastPrime();
-			largestCrossLeft = m_Primes.sizeofLastCross().left();
-			largestCrossRight = m_Primes.sizeofLastCross().right();
 			lblPrimeCount.setText(String.valueOf(primeCount));
 			lblCrossCount.setText(String.valueOf(crossCount));
+			largestCrossLeft = m_Primes.sizeofLastCross().left();
+			largestCrossRight = m_Primes.sizeofLastCross().right();
 			lblLargestPrime.setText("<html><center>The largest prime has " + largestPrime + " digits<br> The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
 			lblLargestCross.setText("The largest cross has " + largestCrossLeft + " and " + largestCrossRight + " digits");
 			super.update(this.getGraphics());
